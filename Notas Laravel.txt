@@ -1,0 +1,146 @@
+dede estar intalado Composer
+
+En el directorio de Xammp htdocs -> sub carpeta composer create-project laravel/laravel nombre-proyecto --prefer-dist
+http://localhost/curso-laravel/probando-laravel/public/
+
+
+composer create-project laravel/laravel nombre-proyecto "5.2.*"   -> version espesifica
+
+crear host virtual C:\xampp\apache\conf\extra archivo httpd-virtual.conf
+	httpd.conf debe estar habilitado el vitsual host -> linea con include
+127.0.0.1 www.cursolaravel.com.devl
+////////7 no se creara eso, no es del todo importante pilas
+
+Dentro de routes -> web.php maneja las rutas
+
+----Datos por url -> Laravel Snippets extenssion para visual code
+Nota: Tener en cuenta el orden: primero cursos/create y luego cursos/{curso}
+
+Route::get('/cursos/{curso}', function ($curso) {
+    // return view('welcome');
+    return "Bienvenido a la pagina del curso: $curso ";
+ });
+
+
+------Contorladores: app/Http/controller 
+usar terminal -> php artisan make:controller HomeController genera un controllador (usar terminal en carpeta raiz del proyecto)
+
+namespace-> lugar donde se encuentra el archivo 
+
+
+extension -> PHP Intelephense verificar errores
+
+
+blade ->> el uso de plantillas para q todo el sitema tenga la misma apariencia
+
+
+para que acceda a directivas debe tener nombre.blade.php ----- en a vista 
+Laravel Blade Snippets--> extensionn
+
+
+@extends('layouts.plantilla') /// cual platilla es
+ 
+@section('title','Home')  // solo 1 linea
+
+@section('content')  // varias lineas //
+    <h1>Bienvenido a la pagina principal</h1>
+@endsection
+
+--------------- DATABASE
+
+config/database.php
+
+---------MIGRACIONES-> control de versiones de base de datos
+database/migrations
+
+php artisan migrate -> migra la base de datos no x uno
+php artisan make:migration create_nombretabla_table -> crear migracion
+
+Revertir cambios bd al ultimo batch
+php artisan migrate:rollback
+
+Hace refresh para agregar columas o etc-- elimina toas las tablas y las vuelve a agregar
+php artisan migrate:fresh
+
+----------- MOFIFICAR 1 TABLA CON INFORMACION EN ELLA---------
+
+php artisan make:migration add_avatar_to_users_table
+crea una nueva funcion en otro documento con Schema::table -> donde se modifica la tabla sin borrar datos de la base de datos
+$table->string('avatar')->nullable()->after('email'); debe ser nullable y si se quiere poenr antes de email
+$table->dropColumn('avatar');
+php artisan migrate para q agrege 
+
+composer require doctrine/dbal -> dependencia requeria para modificar propiedades de columnas ya creadas
+
+php artisan make:migration cambiar_propiedades_to_users_table -> nueva migracion para cambiar users
+$table->string('name',50)->change();
+$table->string('name',255)->change(); en down
+
+simepre HACER ROLLBACK Y LUEGO MIGRATE PARA VER CAMBIOS
+
+----------------MODELOS------------------
+
+php artisan make:model Curso        si creo un modelo User administrara tabla users - Curso -> cursos  --- en ingles pilas Category -> categories
+	app/Models
+		si se quiere q adminsitre otra tabla entonces:
+							luego de use Hasfactory:
+							protected $table = "nombre de la tabla"; 
+--------------------------------
+Uso de tinker 
+	php artisan tinker
+		use App\Models\Curso;
+		$curso = new Curso;
+		$curso->name="Laravel";
+		$curso->description="El mejor frameword de php";
+		$curso; imprime el objetog
+		$curso->save(); guarda el objeto
+		$curso; trae el objeto guardado en la base con los datos de created y updated
+		$curso->description="El mejor framwork de PHP"; Modificar registro 
+
+Si el objeto no tiene id entonces crea uno nuevo, si tiene id entonces solo modifica.
+
+------------------
+php artisan migrate:reset   ->> borra todas las tablas
+
+------------ database/seeders
+	aqui se usa el codigo de tinker dentro de run()
+
+	$curso = new Curso;
+        $curso->name="Laravel";
+	$curso->description="El mejor frameword de php";
+        $curso->category = "Desarrollo web";
+        $curso->save();
+
+		php artisan migrate:fresh
+		php artisan db:seed    -->> correr seed
+
+	php artisan make:seeder CursoSeeder   -->> genera 1 achivo para seeder de cursos 
+
+Al correr bd:seed solo corre el archivo DatabaseSeeder pilas, para agregar lo q esta en otro
+	Colcoar esto dentro de run() de Data...
+	$this->call(CursoSeeder::class);
+
+	USAR php artisan migrate:fresh --seed para hacer los 2 comando al mismo tiempo
+
+-------------- FACTORY ----------- datos de prueba para DB
+php artisan make:factory CursoFactory --model=Curso
+	dentro de return
+	    'name' => $this-> faker->sentence(),
+            'description' => $this-> faker -> paragraph(),
+            'category' => $this-> faker -> randomElement(['Desarrollo Web', 'Diseño Web'])
+
+dentro de los seeder reemplazando las lineas de $curso
+	Curso::factory(50)->create();   // genera 50 registros 
+
+
+NOTA: desde laravel 8 no es necesario los seeders para usar factory se puede usa directamente desde 
+	DatabaseSeeder dentro de run directamente:
+	Curso::factory(50)->create();
+
+
+
+
+
+
+
+
