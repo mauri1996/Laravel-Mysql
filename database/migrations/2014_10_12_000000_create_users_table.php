@@ -19,8 +19,7 @@ class CreateUsersTable extends Migration
             //$table->text('name');/// mas q 255
             $table->string('email')->unique(); // hace q sea unico el correo a nivel de base de datos
             $table->timestamp('email_verified_at')->nullable(); // hace q este campo sea vacio
-            $table->string('password');
-            $table->string('avatar');
+            $table->string('password');            
             $table->rememberToken(); // varchar 100 caraceres para maejar sesiones
             $table->timestamps(); // 2 columnas timestampS created_at y updated_at
         });
