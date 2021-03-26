@@ -1,14 +1,12 @@
 @extends('layouts.plantilla')
 
-@section('title','Curso '.$curso)
+@section('title','Curso '.$curso->name)
 
 @section('content')
-    <h1>
-        @if($categoria)
-            Bienvenido al curso: {{$curso}} de categoria {{$categoria}}
-        @else
-            Bienvenido al curso: {{$curso}}
-        @endif
-                
+    <h1>        
+        Bienvenido al curso: {{$curso->name}} de categoria {{$categoria}}        
     </h1>  
+    <a href="{{route('cursos.index')}}">Volver a cursos</a>
+    <p><strong>Categoria: </strong> {{$curso->category}} </p>
+    <p> {{$curso->description}}<</p>
 @endsection

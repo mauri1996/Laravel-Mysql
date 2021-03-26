@@ -151,6 +151,22 @@ $cursos = Curso::find(5); /// get por id
 $cursos = Curso::where('id','>',45)->get();  /// obtener registros mayores a 45 --- 3 parametros
 $cursos = Curso::where('name','like','% voluptas %')->get(); // trae todos los regitros q en el name tengan voluptas % lo q sea adeltnte y lo q sea atras % por eso a ambos lados el %
 
+----------  Mostrando datos ----------
+se puede usar foreach en blade
+
+
+$cursos = Curso::paginate(); es mejro usar esto en el conorlador para paginar datos
+	se necesita enviar parametro page por url
+		http://localhost/curso-laravel/probando-laravel/public/cursos?page=2
+
+se puede usar CDN desde la plantilla de blade en layouts
+
+
+------------------ RUTAS
+agregar ->name(''); a las rutas
+<a href="{{route('name de las rutas')}}">Crear Curso</a>
+{{route('cursos.show',$curso->id)}} // pasar datos como parametros  /cursos/1
+	<a href="{{route('cursos.show',$curso->id)}}"> {{$curso->name}} </a>  
 
 
 

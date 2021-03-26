@@ -22,11 +22,11 @@ use App\Http\Controllers\CursoController;
 // });
 
 // con controlador
-Route::get('/', HomeController::class); // busca el metodo invoke
+Route::get('/', HomeController::class)->name('home'); // busca el metodo invoke
 
-Route::get('/cursos', [CursoController::class, 'index']);
+Route::get('/cursos', [CursoController::class, 'index'])->name('cursos.index');
 
-Route::get('cursos/create', [CursoController::class,'create']);
+Route::get('cursos/create', [CursoController::class,'create'])->name('cursos.create');
 
 // Route::get('/cursos/{curso}', function ($curso) {
 //     // return view('welcome');
@@ -42,7 +42,7 @@ Route::get('cursos/create', [CursoController::class,'create']);
 //     }    
 // });
 
-Route::get('cursos/{curso}/{categoria?}', [CursoController::class,'show']);
+Route::get('cursos/{id}/{categoria?}', [CursoController::class,'show'])->name('cursos.show');
 
 
 
