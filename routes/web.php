@@ -24,9 +24,11 @@ use App\Http\Controllers\CursoController;
 // con controlador
 Route::get('/', HomeController::class)->name('home'); // busca el metodo invoke
 
-Route::get('/cursos', [CursoController::class, 'index'])->name('cursos.index');
+Route::get('cursos', [CursoController::class, 'index'])->name('cursos.index');
 
 Route::get('cursos/create', [CursoController::class,'create'])->name('cursos.create');
+
+Route::post('cursos', [CursoController::class,'store'])->name('cursos.store'); // igual a cursos.index importante el method
 
 // Route::get('/cursos/{curso}', function ($curso) {
 //     // return view('welcome');
@@ -42,8 +44,10 @@ Route::get('cursos/create', [CursoController::class,'create'])->name('cursos.cre
 //     }    
 // });
 
-Route::get('cursos/{id}/{categoria?}', [CursoController::class,'show'])->name('cursos.show');
+Route::get('cursos/{curso}/edit', [CursoController::class,'edit'])->name('cursos.edit');
+Route::put('cursos/{curso}', [CursoController::class,'update'])->name('cursos.update');
 
+Route::get('cursos/{id}/{categoria?}', [CursoController::class,'show'])->name('cursos.show');
 
 
 

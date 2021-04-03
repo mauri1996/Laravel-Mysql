@@ -10,7 +10,7 @@ class CursoController extends Controller
     // se usa convenciones
     public function index(){
         //return "Bienvenido a la pagina de cursos";
-        $cursos = Curso::paginate();
+        $cursos = Curso::orderBy('id','desc')->paginate();
 
 
         //return $curso; posible api
@@ -19,6 +19,29 @@ class CursoController extends Controller
     public function create(){
         //return "En esta pagina podras crear un curso";
         return view('cursos.create');
+    }
+
+    public function store(Request $request){
+        $curso= new Curso();
+        $curso->name= $request->name;
+        $curso->description= $request->description;
+        $curso->category= $request->category;
+        $curso->save();
+
+        return redirect()->route('cursos.show',$curso->id);
+    }
+    public function edit(Curso $curso){
+        
+        return view('cursos.edit',compact('curso'));
+    }
+
+    public function update(Request $request, Curso $curso){
+        $curso->name = $request->name;
+        $curso->description = $request->description;
+        $curso->category = $request->category;
+        $curso->save();
+
+        return redirect()->route('cursos.show',$curso);
     }
 
     public function show($id, $categoria = null){

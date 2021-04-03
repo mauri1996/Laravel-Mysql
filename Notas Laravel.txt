@@ -171,6 +171,43 @@ agregar ->name(''); a las rutas
 
 
 
+----------- CRUD
+Cada vez q se envia informaion por metodo post debes envir formularioo sino sale pagina expirada
+@csrf
+dentro del formulario
+--- funcion q recive la info enviada desde el crud
+public function store(Request $request){   }
+
+$cursos = Curso::orderBy('id','desc')->paginate(); // para ordenar en al paginacions
+
+REDIRECCIONAR -> return redirect()->route('cursos.show',$curso->id);
+-..... EDIT
+Si se coloca el modelo como argumento laravel traera el objeto Curso con ese id directamente
+public function edit(Curso $id){        
+    return $id; }
+
+Es mejor asi 
+public function edit(Curso $curso){
+    return $curso;}
+
+LAravel no entiende metodo PUt entonces -> method="post"
+@method('put') -> dentro del formulario para q entienda
+
+actualizar registro put request y $curso
+
+    public function update(Request $request, Curso $curso){
+        $curso->name = $request->name;
+        $curso->description = $request->description;
+        $curso->category = $request->category;
+        $curso->save();
+
+        return redirect()->route('cursos.show',$curso);
+    }
+
+
+
+
+
 
 
 
